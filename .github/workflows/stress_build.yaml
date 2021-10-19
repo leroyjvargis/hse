@@ -1,7 +1,8 @@
 name: Stress builds
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron:  '10 * * * *'
 
 jobs:
   stress_ub:
