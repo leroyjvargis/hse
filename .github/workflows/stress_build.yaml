@@ -1,8 +1,7 @@
 name: Stress builds
 
 on:
-  schedule:
-    - cron:  '10 * * * *'
+  workflow_dispatch:
 
 jobs:
   stress_ub:
@@ -51,7 +50,7 @@ jobs:
 
     - name: Run tests
       run: |
-              poetry run meson test -C builddir -t 3 --suite=stress --print-errorlogs --no-stdsplit
+              poetry run meson test -C builddir --suite=stress_ci --print-errorlogs --no-stdsplit
 
     - uses: actions/upload-artifact@v2
       if: failure()
