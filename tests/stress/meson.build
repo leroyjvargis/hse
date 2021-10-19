@@ -20,10 +20,10 @@ programs = {
                 'args': '-b 64 -c 5000000 -e 0 -i 1 -o 2 -r 1 -s 16 -t 2 -v 512'.split(),
             },
             'txn_noclose_tinyrecords_noclose_small': {
-                'args': '-b 8 -c 9999000 -e 0 -i 0 -o 2 -r 0 -s 16 -t 1 -v 16'.split(),
+                'args': '-b 8 -c 4250000 -e 0 -i 0 -o 2 -r 0 -s 16 -t 1 -v 16'.split(),
             },
             'txn_noclose_tinyrecords_disablewal_syncbeforeexit_small': {
-                'args': '-b 8 -c 4250000 -e 0 -i 1 -o 2 -r 1 -s 16 -t 1 -v 16'.split(),
+                'args': '-b 8 -c 5000000 -e 0 -i 1 -o 2 -r 1 -s 16 -t 1 -v 16'.split(),
             },
             'txn_noclose_1k2k_noclose_small': {
                 'args': '-b 64 -c 1250000 -e 0 -i 0 -o 2 -r 0 -s 16 -t 1 -v 256 -p 64 -q 256'.split(),
@@ -65,7 +65,7 @@ programs = {
                 'args': '-b 64 -c 2500000 -d 1 -e 1000 -o 2 -v 256'.split(),
             },
             'cursor_with_sync_small': {
-                'args': '-b 64 -c 5000000 -d 5 -e 1000 -o 2 -v 256'.split(),
+                'args': '-b 64 -c 4500000 -d 5 -e 1000 -o 2 -v 256'.split(),
             },
             'cursor_with_transactions_small': {
                 'args': '-b 64 -c 1000000 -d 6 -e 1000 -o 2 -s 1000 -v 256'.split(),
