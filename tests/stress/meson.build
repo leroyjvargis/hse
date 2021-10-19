@@ -116,6 +116,7 @@ programs = {
             'cursor_with_transactions_small': {
                 'args': '-b 64 -c 1000000 -d 6 -e 1000 -o 2 -s 1000 -v 256'.split(),
             },
+        },
         'large_tests': {
             'create_cursor_large': {
                 'args': '-b 64 -c 1000000000 -d 1 -e 20000 -o 100 -v 1024'.split(),
