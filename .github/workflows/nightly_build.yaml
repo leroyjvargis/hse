@@ -1,4 +1,4 @@
-name: Stress builds
+name: Nightly builds
 
 on:
   workflow_dispatch:
