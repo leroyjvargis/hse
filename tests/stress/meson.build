@@ -69,9 +69,9 @@ programs = {
             'txn_noclose_1k2k_disablewal_syncbeforeexit_small': {
                 'args': '-b 64 -c 5000000 -e 0 -i 1 -o 2 -r 1 -s 16 -t 1 -v 1024 -p 64 -q 256'.split(),
             },
-            'multikvs_disablewal_syncbeforeexit_small': {
-                'args': '-b 64 -c 475000 -e 0 -i 1 -o 2 -r 1 -s 64 -t 4 -v 512'.split(),
-            },
+            #'multikvs_disablewal_syncbeforeexit_small': {
+            #    'args': '-b 64 -c 475000 -e 0 -i 1 -o 2 -r 1 -s 64 -t 4 -v 512'.split(),
+            #},
         },
         'large_tests': {
             'noclose_large': {
