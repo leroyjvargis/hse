@@ -2,6 +2,11 @@ name: Nightly builds
 
 on:
   workflow_dispatch:
+    inputs:
+        branch:
+          description: 'Branch to use'
+          required: true
+          default: 'updates/stress-tests'
 
 jobs:
   stress_ub:
@@ -39,6 +44,8 @@ jobs:
               python3 -m pip install --user setuptools_rust wheel
               python3 -m pip install --user poetry
     - uses: actions/checkout@v2
+      with:
+              ref: ${{ github.event.inputs.branch }}
 
     - name: Setup python environment to run branch
       run: |
