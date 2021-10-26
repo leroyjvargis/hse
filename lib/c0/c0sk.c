@@ -6,7 +6,6 @@
 #include <hse_util/platform.h>
 #include <hse_util/hse_err.h>
 #include <hse_util/event_counter.h>
-#include <hse_util/timing.h>
 #include <hse_util/alloc.h>
 #include <hse_util/slab.h>
 #include <hse_util/condvar.h>
@@ -41,7 +40,7 @@ void
 c0sk_perfc_alloc(struct c0sk_impl *self)
 {
     if (perfc_ctrseti_alloc(
-            COMPNAME,
+            self->c0sk_kvdb_rp->perfc_level,
             self->c0sk_kvdbhome,
             c0sk_perfc_op,
             PERFC_EN_C0SKOP,
@@ -50,7 +49,7 @@ c0sk_perfc_alloc(struct c0sk_impl *self)
         hse_log(HSE_ERR "cannot alloc c0sk op perf counters");
 
     if (perfc_ctrseti_alloc(
-            COMPNAME,
+            self->c0sk_kvdb_rp->perfc_level,
             self->c0sk_kvdbhome,
             c0sk_perfc_ingest,
             PERFC_EN_C0SKING,

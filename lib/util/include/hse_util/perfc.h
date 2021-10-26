@@ -9,7 +9,6 @@
 #include <hse_util/platform.h>
 #include <hse_util/assert.h>
 #include <hse_util/atomic.h>
-#include <hse_util/timing.h>
 #include <hse_util/timer.h>
 #include <hse_util/hse_err.h>
 #include <hse_util/data_tree.h>
@@ -17,6 +16,12 @@
 /* clang-format off */
 
 /* MTF_MOCK_DECL(perfc) */
+
+/* Perf counter engagement levels
+ */
+#define PERFC_LEVEL_MIN     (0)
+#define PERFC_LEVEL_MAX     (9)
+#define PERFC_LEVEL_DEFAULT (2)
 
 /* PERFC_VALPERCNT          max per-cpu values per counter
  * PERFC_VALPERCPU          max per-cpu values per cacheline
@@ -578,16 +583,14 @@ struct perfc_set {
  * Internal structure corresponding to a handle struct perfc_set.
  */
 struct perfc_seti {
-    char                     pcs_path[DT_PATH_LEN];
-    char                     pcs_famname[DT_PATH_ELEMENT_LEN];
-    char                     pcs_ctrseti_name[DT_PATH_ELEMENT_LEN];
+    char                     pcs_path[DT_PATH_MAX];
+    char                     pcs_famname[DT_PATH_ELEMENT_MAX];
+    char                     pcs_ctrseti_name[DT_PATH_ELEMENT_MAX];
     u32                      pcs_ctrc;
     struct perfc_set *       pcs_handle;
     const struct perfc_name *pcs_ctrnamev;
     union perfc_ctru         pcs_ctrv[];
 };
-
-extern u32 perfc_verbosity;
 
 /**
  * perfc_lat_record_impl() - Record a latency sample to get its distribution
@@ -908,7 +911,7 @@ extern struct perfc_ivl *perfc_di_ivl;
  *      Typically:
  *      /data/perfc/mpool/<mpool uuid>/<FAMILYNAME>/
  *
- * @component: typically "mpool", placed below /data/perfc/
+ * @prio: the level at and above which the counter should be engaged
  * @name: typically the name of the mpool (its uuid).
  * @ctrnames: name and description of each the counter in the set.
  *      This table should no be freed by the caller till the counter set
@@ -944,7 +947,7 @@ extern struct perfc_ivl *perfc_di_ivl;
 /* MTF_MOCK */
 merr_t
 perfc_ctrseti_alloc(
-    const char *             component,
+    uint                     prio,
     const char *             name,
     const struct perfc_name *ctrv,
     u32                      ctrc,

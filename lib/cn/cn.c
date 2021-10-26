@@ -1034,7 +1034,7 @@ cn_kvset_mk(struct cn_kvsetmk_ctx *ctx, struct kvset_meta *km, u64 tag)
 static void
 cn_perfc_alloc(struct cn *cn)
 {
-    char name_buf[DT_PATH_LEN];
+    char name_buf[DT_PATH_MAX];
     int  i, warn;
 
     struct {
@@ -1077,7 +1077,7 @@ cn_perfc_alloc(struct cn *cn)
     for (i = 0; i < NELEM(pc_sets); i++) {
 
         if (perfc_ctrseti_alloc(
-                COMPNAME,
+                cn->rp->perfc_level,
                 name_buf,
                 pc_sets[i].schema,
                 pc_sets[i].schema_len,
