@@ -277,7 +277,7 @@ foreach t, params : tests
             t,
         ],
         timeout: 1800,
-        is_parallel: true,
+        is_parallel: false,
         workdir: meson.current_source_dir(),
         suite: ['functional'] + params.get('suites', []),
         depends: [
