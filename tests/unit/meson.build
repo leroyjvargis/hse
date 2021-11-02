@@ -92,11 +92,7 @@ components = {
         'hse_gparams_test': {},
         'param_test': {},
     },
-    'framework': {
-        'mock_test': {},
-    },
     'kvdb': {
-        'ctxn_perfc_test': {},
         'ikvdb_test': {},
         'kvdb_cparams_test': {},
         'kvdb_ctxn_test': {},
@@ -105,9 +101,9 @@ components = {
         'kvdb_home_test': {},
         'kvdb_meta_test': {
             'args': [
-			    meson.current_source_dir() / 'kvdb/kvdb-meta-files',
-			],
-		},
+                meson.current_source_dir() / 'kvdb/kvdb-meta-files',
+            ],
+        },
         'kvdb_rest_test': {},
         'kvdb_rparams_test': {},
         'mclass_policy_test': {},
@@ -197,7 +193,6 @@ components = {
             ],
         },
         'compression_test': {},
-        'darray_test': {},
         'data_tree_test': {
             'sources': [
                 files(
@@ -266,12 +261,10 @@ foreach c, tests : components
         t_exe = executable(
             t,
             [
-                '../framework/src/fixtures.c',
                 c / '@0@.c'.format(t),
                 params.get('sources', []),
             ],
             c_args: [
-                '-DCOMPNAME="kvdb"',
                 params.get('c_args', []),
             ],
             include_directories: params.get('include_directories', []),
@@ -279,6 +272,7 @@ foreach c, tests : components
                 hse_mock_dep,
                 hse_mock_repository_dep,
                 hse_dependencies,
+                hse_test_framework_dep,
                 params.get('dependencies', []),
             ],
             gnu_symbol_visibility: 'hidden',

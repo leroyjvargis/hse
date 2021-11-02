@@ -3,10 +3,10 @@
  * Copyright (C) 2015-2021 Micron Technology, Inc.  All rights reserved.
  */
 
-#include <hse_ut/framework.h>
-#include <hse_test_support/mock_api.h>
+#include <mtf/framework.h>
+#include <mock/api.h>
 #include <hse_util/xrand.h>
-#include <hse_test_support/mapi_alloc_tester.h>
+#include <mock/alloc_tester.h>
 
 #include <hse_util/platform.h>
 
@@ -30,7 +30,7 @@ init(void)
     kvdb_rp = kvdb_rparams_defaults();
 
     t = &throttlebuf;
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     for (i = 0; i < sc; i++)
         sv[i] = throttle_sensor(t, i);
     throttle_init_params(t, &kvdb_rp);
@@ -61,7 +61,7 @@ MTF_DEFINE_UTEST_PRE(test, t_init, pre_test)
         kvdb_rp = kvdb_rparams_defaults();
 
         if (i == 1) {
-            mapi_inject(mapi_idx_perfc_ctrseti_alloc, -1);
+            mapi_inject(mapi_idx_perfc_alloc_impl, -1);
             mapi_inject(mapi_idx_perfc_ivl_create, -1);
         }
 
@@ -72,11 +72,11 @@ MTF_DEFINE_UTEST_PRE(test, t_init, pre_test)
         throttle_perfc_fini();
 
         throttle_perfc_init();
-        throttle_init(&thr, &kvdb_rp);
+        throttle_init(&thr, &kvdb_rp, __func__);
         throttle_fini(&thr);
         throttle_perfc_fini();
 
-        mapi_inject_unset(mapi_idx_perfc_ctrseti_alloc);
+        mapi_inject_unset(mapi_idx_perfc_alloc_impl);
         mapi_inject_unset(mapi_idx_perfc_ivl_create);
     }
 
@@ -90,7 +90,7 @@ MTF_DEFINE_UTEST_PRE(test, t_basic, pre_test)
     kvdb_rp = kvdb_rparams_defaults();
 
     t = &throttlebuf;
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     throttle_debug(t);
 
     /* delay should be 0 after init */
@@ -129,7 +129,7 @@ MTF_DEFINE_UTEST_PRE(test, t_dur_params, pre_test)
 
     t = &throttlebuf;
 
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     throttle_init_params(t, &kvdb_rp);
 
     /* get sensors */
@@ -148,7 +148,7 @@ MTF_DEFINE_UTEST_PRE(test, t_dur_params, pre_test)
 
     kvdb_rp = kvdb_rparams_defaults();
 
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     throttle_init_params(t, &kvdb_rp);
 
     /* get sensors */
@@ -168,7 +168,7 @@ MTF_DEFINE_UTEST_PRE(test, t_dur_params, pre_test)
     kvdb_rp = kvdb_rparams_defaults();
     kvdb_rp.dur_throttle_lo_th = 0;
 
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     throttle_init_params(t, &kvdb_rp);
 
     /* get sensors */
@@ -188,7 +188,7 @@ MTF_DEFINE_UTEST_PRE(test, t_dur_params, pre_test)
     kvdb_rp = kvdb_rparams_defaults();
     kvdb_rp.throttle_disable = 1;
 
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     throttle_init_params(t, &kvdb_rp);
 
     throttle_fini(t);
@@ -197,7 +197,7 @@ MTF_DEFINE_UTEST_PRE(test, t_dur_params, pre_test)
     kvdb_rp = kvdb_rparams_defaults();
     kvdb_rp.throttle_update_ns = 1000000UL * 5000UL;
 
-    throttle_init(t, &kvdb_rp);
+    throttle_init(t, &kvdb_rp, __func__);
     throttle_init_params(t, &kvdb_rp);
 
     throttle_fini(t);

@@ -3,9 +3,9 @@
  * Copyright (C) 2015-2021 Micron Technology, Inc.  All rights reserved.
  */
 
-#include <hse_ut/framework.h>
-#include <hse_test_support/mock_api.h>
-#include <hse_test_support/mapi_alloc_tester.h>
+#include <mtf/framework.h>
+#include <mock/api.h>
+#include <mock/alloc_tester.h>
 
 #include <hse_util/hse_err.h>
 #include <hse_util/delay.h>
@@ -469,7 +469,7 @@ MTF_DEFINE_UTEST_PRE(test, t_sp3_create_nomem, pre_test)
 
     mapi_inject(mapi_idx_sts_perfc_alloc, 0);
     mapi_inject(mapi_idx_sts_perfc_free, 0);
-    mapi_inject(mapi_idx_perfc_ctrseti_alloc, 0);
+    mapi_inject(mapi_idx_perfc_alloc_impl, 0);
 
     void run(struct mtf_test_info * lcl_ti, uint i, uint j)
     {
@@ -495,6 +495,7 @@ MTF_DEFINE_UTEST_PRE(test, t_sp3_create_nomem, pre_test)
 
     mapi_inject_unset(mapi_idx_sts_perfc_alloc);
     mapi_inject_unset(mapi_idx_sts_perfc_free);
+    mapi_inject_unset(mapi_idx_perfc_alloc_impl);
 }
 
 MTF_DEFINE_UTEST_PRE(test, t_sp3_create_fail, pre_test)

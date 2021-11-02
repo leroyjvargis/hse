@@ -3,7 +3,7 @@
  * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
  */
 
-#include <hse_ut/framework.h>
+#include <mtf/framework.h>
 
 #include <hse_util/inttypes.h>
 #include <hse_util/hse_err.h>
@@ -75,13 +75,13 @@ MTF_DEFINE_UTEST_PREPOST(rest_api, get_handler_test, rest_start, rest_stop)
     err = rest_url_register(0, 0, rest_dt_get, rest_dt_put, "test_dt");
     ASSERT_EQ(0, err);
 
-    path = "/test_dt/event_counter";
+    path = "/test_dt/events";
     memset(buf, 0, sizeof(buf));
     err = curl_get(path, sock, buf, sizeof(buf));
     ASSERT_EQ(err, 0);
 
     /* Invalid(NULL) path */
-    path = "/test_dt/event_counter";
+    path = "/test_dt/events";
     memset(buf, 0, sizeof(buf));
     err = curl_get(0, sock, buf, sizeof(buf));
     ASSERT_EQ(merr_errno(err), EINVAL);
@@ -109,21 +109,22 @@ MTF_DEFINE_UTEST_PREPOST(rest_api, put_handler_test, rest_start, rest_stop)
     snprintf(
         full_path,
         sizeof(full_path),
-        "%s/%s/%s/%s/%d",
+        "%s/%s/%s/%d",
         DT_PATH_EVENT,
-        COMPNAME,
         basename(__FILE__),
         __func__,
         line);
 
     /* Get the dt element that the upcoming tests will attempt to modify */
     dte = dt_find(full_path, 1);
+    ASSERT_NE(NULL, dte);
+
     ec = dte->dte_data;
 
     /* Normal Working */
     ASSERT_EQ(ec->ev_trip_odometer, 0);
     strcpy(path, full_path + 1);
-    strcat(path, "?trip_od=1");
+    strcat(path, "?trip_odometer=1");
     err = curl_put(path, sock, 0, 0, buf, sizeof(buf));
     ASSERT_EQ(0, err);
     /* check in dt_tree if trip odometer is non-zero */
@@ -131,32 +132,32 @@ MTF_DEFINE_UTEST_PREPOST(rest_api, put_handler_test, rest_start, rest_stop)
 
     /* Ends on some random arg */
     strcpy(path, full_path + 1);
-    strcat(path, "?trip_od=1&just_a_word");
+    strcat(path, "?trip_odometer=1&just_a_word");
     err = curl_put(path, sock, 0, 0, buf, sizeof(buf));
     ASSERT_EQ(0, err);
 
     /* Empty field */
     strcpy(path, full_path + 1);
-    strcat(path, "?trip_od=1&=abcd");
+    strcat(path, "?trip_odometer=1&=abcd");
     err = curl_put(path, sock, 0, 0, buf, sizeof(buf));
     ASSERT_EQ(0, err);
 
     /* Empty value */
     strcpy(path, full_path + 1);
-    strcat(path, "?trip_od=1&abcd=");
+    strcat(path, "?trip_odometer=1&abcd=");
     err = curl_put(path, sock, 0, 0, buf, sizeof(buf));
     ASSERT_EQ(0, err);
 
     /* Sets a priority */
     strcpy(path, full_path + 1);
-    strcat(path, "?trip_od=1&pri=HSE_INFO");
+    strcat(path, "?trip_odometer=1&pri=HSE_INFO");
     err = curl_put(path, sock, 0, 0, buf, sizeof(buf));
     ASSERT_EQ(0, err);
 
     /* nonexistent dt path */
     const char *invalid_path = "Invalid path";
 
-    snprintf(path, sizeof(path), "%s/event_counter_no_really/%s?trip_od=1", DT_PATH_ROOT, COMPNAME);
+    snprintf(path, sizeof(path), "%s/event_counter_no_really?trip_odometer=1", DT_PATH_ROOT);
     err = curl_put(path, sock, 0, 0, buf, sizeof(buf));
     ASSERT_EQ(0, strncmp(invalid_path, buf, strlen(invalid_path)));
     ASSERT_EQ(0, err);
