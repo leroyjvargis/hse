@@ -51,12 +51,9 @@ jobs:
       - name: Run tests
         run: |
           ulimit -c unlimited 
-          sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
-
-      - name: Capture coredumps
-        if: failure()
-        run: |
-          sudo chmod -R +rwx /cores/*
+          # sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
+          ls -al /var/log/
+          ls -al /var/lib/systemd/coredump/
 
       - uses: actions/upload-artifact@v2
         if: failure()
