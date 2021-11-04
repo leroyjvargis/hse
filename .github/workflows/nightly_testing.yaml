@@ -50,9 +50,9 @@ jobs:
 
       - name: Run tests
         run: |
-          ulimit -c unlimited         
-          sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
+          ulimit -c unlimited 
           sudo chmod -R +rwx /cores/*
+          sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
 
       - uses: actions/upload-artifact@v2
         if: failure()
