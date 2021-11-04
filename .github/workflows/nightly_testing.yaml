@@ -40,11 +40,6 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Capture core dumps on crash
-        run: |
-          ulimit -c unlimited         
-          sudo chmod -R +rwx /cores/*
-
       - name: Poetry setup
         run: |
           poetry install
@@ -55,7 +50,9 @@ jobs:
 
       - name: Run tests
         run: |
-          poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
+          ulimit -c unlimited         
+          sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
+          sudo chmod -R +rwx /cores/*
 
       - uses: actions/upload-artifact@v2
         if: failure()
