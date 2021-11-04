@@ -40,6 +40,11 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
+      - name: Capture core dumps on crash
+        run: |
+          ulimit -c unlimited         
+          sudo chmod -R +rwx /cores/*
+
       - name: Poetry setup
         run: |
           poetry install
@@ -59,3 +64,4 @@ jobs:
           path: |
             builddir/meson-logs/
             /var/log/syslog
+            /cores
