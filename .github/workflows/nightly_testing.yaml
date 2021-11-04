@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04]
+        os: ubuntu-latest
         build_type: [release, debugoptimized]
 
     steps:
@@ -51,8 +51,12 @@ jobs:
       - name: Run tests
         run: |
           ulimit -c unlimited 
-          sudo chmod -R +rwx /cores/*
           sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
+
+      - name: Capture coredumps
+        if: failure()
+        run: |
+          sudo chmod -R +rwx /cores/*
 
       - uses: actions/upload-artifact@v2
         if: failure()
