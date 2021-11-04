@@ -18,41 +18,11 @@ jobs:
         build_type: [release, debugoptimized]
 
     steps:
-      - name: Freeing up disk space on CI system
-        run: |
-          df -h
-          echo "Removing large packages"
-          sudo apt-get remove -y azure-cli google-cloud-sdk hhvm google-chrome-stable firefox powershell mono-devel
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-          echo "Removing large directories"
-          # deleting 15GB
-          rm -rf /usr/share/dotnet/
-          df -h
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev
-          sudo python3 -m pip install poetry
-
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.inputs.branch }}
-
-      - name: Poetry setup
-        run: |
-          sudo poetry install
-
-      - name: Meson setup
-        run: |
-          sudo poetry run meson builddir -Dbuildtype=${{ matrix.build_type }} -Dycsb=true
-
       - name: Run tests
         run: |
           ulimit -c unlimited 
-          # sudo poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
           ls -al /var/log/
+          cat /var/log/kern.log
           ls -al /var/lib/systemd/coredump/
 
       - uses: actions/upload-artifact@v2
