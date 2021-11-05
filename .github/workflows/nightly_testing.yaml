@@ -30,8 +30,10 @@ jobs:
           rm -rf /usr/share/dotnet/
           df -h
 
-      - name: Install dependencies
+      - name: Setup and install dependencies
         run: |
+          ulimit -c unlimited 
+          sudo systemctl enable apport.service
           sudo apt-get update
           sudo apt-get install build-essential libbsd-dev pkg-config openjdk-8-jdk libmicrohttpd-dev liburcu-dev libyaml-dev liblz4-dev libcurl4-openssl-dev libmongoc-1.0-0 libbson-1.0-0 libssl-dev libsasl2-dev
           python3 -m pip install --user poetry
@@ -50,7 +52,6 @@ jobs:
 
       - name: Run tests
         run: |
-          ulimit -c unlimited 
           poetry run meson test -C builddir --suite=nightly-small --print-errorlogs --no-stdsplit
 
       - uses: actions/upload-artifact@v2
@@ -61,4 +62,4 @@ jobs:
             builddir/meson-logs/
             /var/log/syslog
             /var/log/kern.log
-            /var/lib/systemd/coredump/
+            /var/crash/
