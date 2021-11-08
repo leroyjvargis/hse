@@ -44,6 +44,9 @@ add_test_setup(
     exclude_suites: ['long', 'smoke', 'non-deterministic', 'stress', 'stress-large', 'nightly-small'] + additional_suite_exclusions,
 )
 
+message('value of in_ci')
+message(in_ci)
+
 subdir('framework')
 subdir('support')
 subdir('fixtures')
