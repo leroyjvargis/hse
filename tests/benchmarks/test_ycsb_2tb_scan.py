@@ -7,8 +7,10 @@ from pathlib import Path
 from tools.ycsb import YcsbTest
 
 
-operationcount = 2000 * 1000 * 1000
-recordcount = 2000 * 1000 * 1000
+# operationcount = 2000 * 1000 * 1000
+# recordcount = 2000 * 1000 * 1000
+operationcount = 2000 * 100
+recordcount = 2000 * 100
 
 field_props = "-p fieldcount=1 -p fieldlength=1000"
 load_props = f"{field_props} -p recordcount={recordcount}"

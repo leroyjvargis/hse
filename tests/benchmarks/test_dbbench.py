@@ -7,7 +7,8 @@ from pathlib import Path
 from tools.dbbench import DBbenchTest
 
 name = Path(__file__).stem
-cli_params = "--num=900000000 --threads=32 --value_size=400"
+# cli_params = "--num=900000000 --threads=32 --value_size=400"
+cli_params = "--num=900000 --threads=32 --value_size=200"
 cmdlist = [
     f"--benchmarks=fillseq {cli_params} --histogram=1".split(),
     f"--benchmarks=overwrite --use_existing_db=1 {cli_params} --histogram=1".split(),

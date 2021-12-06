@@ -8,7 +8,8 @@ from tools.kmt import KmtTest
 
 
 name = Path(__file__).stem
-args = "-S0 -b -w50 -l1000 -i2000000 -t300"
+# args = "-S0 -b -w50 -l1000 -i2000000 -t300"
+args = "-S0 -b -w50 -l1000 -i200000 -t300"
 
 t = KmtTest(name, args.split())
 
