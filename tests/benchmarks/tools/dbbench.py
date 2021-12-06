@@ -27,7 +27,7 @@ class DBbenchTest(BaseTest):
         super().__init__(name, "dbbench")
 
         self.compact = compact
-        self.compact_args = [config.HSE_EXECUTABLE, "kvdb", "compact", config.KVDB_HOME]
+        self.compact_args = [config.HSE_EXECUTABLE, "kvdb", "compact", "-t", "3600", config.KVDB_HOME]
         self.dbbench_executable_path = shutil.which("db_bench")
         self.cwd = os.path.dirname(self.dbbench_executable_path)
 
